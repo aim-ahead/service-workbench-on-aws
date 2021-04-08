@@ -34,3 +34,4 @@ docs/build
 
 # rStudio specific
 source/ServiceWorkbenchOnAWS/main/solution/machine-images/config/infra/files/rstudio/*
+pnpm-lock.yaml
