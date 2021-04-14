@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2021-04-12
+
+### Added
+- feat: Display SWB Version in UI's Top Bar
+- fix: Fix cost dashboard bugs
+
+## [2.1.5] - 2021-04-08
+
+### Added
+- fix: Ensure sdk retry logic is enabled in prod
+- docs: Readme updated
+- fix: assume role on added member account
 
 ## [2.1.4] - 2021-04-06
 
