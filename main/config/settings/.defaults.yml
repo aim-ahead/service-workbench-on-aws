@@ -28,6 +28,24 @@ regionShortNamesMap:
 # The default region to deploy to
 awsRegion: us-east-1
 
+
+# Pre-VPC configuration
+
+#provide VPC Id here
+VPC: ''
+
+# Private subnetsw id
+PrivateSubnet1: ''
+
+PrivateSubnet2: ''
+
+
+# Public subnets id
+PublicSubnet1: ''
+
+PublicSubnet2: ''
+
+
 # Short region name
 # This is used in the namespace to avoid naming collisions to allow deploying the same solution across multiple regions
 # Currently using the ISO country code or state code or city abbreviation as short name of the region

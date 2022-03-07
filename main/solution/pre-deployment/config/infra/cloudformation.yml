@@ -48,9 +48,26 @@ Resources:
                 - !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${self:custom.settings.backendStackName}
                 - !Sub arn:${AWS::Partition}:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${self:custom.settings.backendStackName}/*
 
+
+# =============================================================================================
+  # ECR Repository
+# =============================================================================================
+  MyRepository: 
+    Type: 'AWS::ECR::Repository'
+    Properties: 
+      RepositoryName: ${self:custom.settings.ecrRespositoryName}
+      ImageScanningConfiguration: 
+        ScanOnPush: false
+
 # =============================================================================================
 # Outputs
 # =============================================================================================
 Outputs:
   PreDeploymentRoleArn:
     Value: !GetAtt RolePreDeploymentLambda.Arn
+  ECRRepositoryName:
+    Value: !Ref MyRepository
+  AWSAccountNumber:
+    Value: !Ref AWS::AccountId
+  AWSRegion:
+    Value: !Ref AWS::Region

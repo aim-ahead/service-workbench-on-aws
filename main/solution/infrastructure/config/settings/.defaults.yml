@@ -1,5 +1,27 @@
 # The S3 bucket name to be used to host the static website
 websiteBucketName: ${self:custom.settings.globalNamespace}-website
 
+preDeploymentStackName: ${self:custom.settings.namespace}-preDeployment
+
+ecrRespositoryName: ${cf:${self:custom.settings.preDeploymentStackName}.ECRRepositoryName}
+
+awsRegion: ${self:custom.settings.awsRegion}
+
 # The S3 bucket name to be used for S3 access logging
 loggingBucketName: ${self:custom.settings.globalNamespace}-logging
+
+
+#vpc Id 
+vpcId: ''
+
+#Public Subnet-1 Id
+publicSubnet1: ''
+
+#Public Subnet-2 Id
+publicSubnet2: ''
+
+#Private Subnet-1 Id
+privateSubnet1:
+
+#Private Subnet-2 Id
+privateSubnet2:
