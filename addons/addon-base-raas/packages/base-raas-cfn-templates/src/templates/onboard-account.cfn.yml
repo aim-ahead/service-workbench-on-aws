@@ -25,10 +25,14 @@ Parameters:
     Type: String
     Description: A unique ID used to identify this account
 
-  VpcCidr:
-    Description: Please enter the IP range (CIDR notation) for this VPC
-    Type: String
-    Default: 10.0.0.0/16
+  # VpcCidr: #as per BYON we are not creating any VPC, instead we are using existing VPC in the account
+  #   Description: Please enter the IP range (CIDR notation) for this VPC
+  #   Type: String
+  #   Default: 10.0.0.0/16
+
+  VPC:
+    Description: Please enter the VPC ID in which the SWB products will be created
+    Type: AWS::EC2::VPC::Id
 
   ApiHandlerArn:
     Type: String
@@ -40,10 +44,18 @@ Parameters:
 
   # Generous subnet allocation of 8192 addresses (ie room for a few concurrent EMR clusters)
   # Range from 10.0.0.0 to 10.0.31.255
-  PublicSubnetCidr:
-    Description: Please enter the IP range (CIDR notation) for the public subnet. This value is only required if AppStream is disabled.
+  # PublicSubnetCidr: #as per BYON we are not creating any subnet, instead we are using existing public subnet in the account
+  #   Description: Please enter the IP range (CIDR notation) for the public subnet. This value is only required if AppStream is disabled.
+  #   Type: String
+  #   Default: 10.0.0.0/19
+
+  PublicSubnet1:
+    Description: Please enter the public Subnet ID in which the SWB products will be created
+    Type: AWS::EC2::Subnet::Id
+
+  PublicRouteTable:
+    Description: Please enter the Route Table ID of the public subnet used.
     Type: String
-    Default: 10.0.0.0/19
 
   LaunchConstraintRolePrefix:
     Description: Role name prefix to use when creating a launch constraint role in the on-boarded account
@@ -622,15 +634,17 @@ Resources:
 
   # VPC for launching EMR clusters into
   # Just one AZ as we're aiming for transient low-cost clusters rather than HA
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: !Ref VpcCidr
-      EnableDnsSupport: true
-      EnableDnsHostnames: true
-      Tags:
-        - Key: Name
-          Value: !Sub ${Namespace} vpc
+
+  #commenting the below section as the new VPC will not be created. Instead an existing VPC ID will be used.
+  # VPC:
+  #   Type: AWS::EC2::VPC
+  #   Properties:
+  #     CidrBlock: !Ref VpcCidr
+  #     EnableDnsSupport: true
+  #     EnableDnsHostnames: true
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub ${Namespace} vpc
 
   FlowLogVPC:
     Type: AWS::EC2::FlowLog
@@ -648,32 +662,33 @@ Resources:
         - Key: Purpose
           Value: AcceptTraffic
 
-  InternetGateway:
-    Type: AWS::EC2::InternetGateway
-    Condition: isNotAppStream
-    Properties:
-      Tags:
-        - Key: Name
-          Value: !Sub ${Namespace} igw
+  #commenting the below section as the new VPC and subnet will not be created. Instead an existing VPC & subnet IDs will be used.
+  # InternetGateway:
+  #   Type: AWS::EC2::InternetGateway
+  #   Condition: isNotAppStream
+  #   Properties:
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub ${Namespace} igw
 
-  InternetGatewayAttachment:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Condition: isNotAppStream
-    Properties:
-      InternetGatewayId: !Ref InternetGateway
-      VpcId: !Ref VPC
+  # InternetGatewayAttachment:
+  #   Type: AWS::EC2::VPCGatewayAttachment
+  #   Condition: isNotAppStream
+  #   Properties:
+  #     InternetGatewayId: !Ref InternetGateway
+  #     VpcId: !Ref VPC
 
-  PublicSubnet1:
-    Type: AWS::EC2::Subnet
-    Condition: isNotAppStream
-    Properties:
-      VpcId: !Ref VPC
-      AvailabilityZone: !Select [0, !GetAZs '']
-      CidrBlock: !Ref PublicSubnetCidr
-      MapPublicIpOnLaunch: true
-      Tags:
-        - Key: Name
-          Value: !Sub ${Namespace} public subnet 1
+  # PublicSubnet1:
+  #   Type: AWS::EC2::Subnet
+  #   Condition: isNotAppStream
+  #   Properties:
+  #     VpcId: !Ref VPC
+  #     AvailabilityZone: !Select [0, !GetAZs '']
+  #     CidrBlock: !Ref PublicSubnetCidr
+  #     MapPublicIpOnLaunch: true
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub ${Namespace} public subnet 1
 
   FlowLogPublicSubnet1:
     Type: AWS::EC2::FlowLog
@@ -691,30 +706,31 @@ Resources:
         - Key: Purpose
           Value: AcceptTraffic
 
-  PublicRouteTable:
-    Type: AWS::EC2::RouteTable
-    Condition: isNotAppStream
-    Properties:
-      VpcId: !Ref VPC
-      Tags:
-        - Key: Name
-          Value: !Sub ${Namespace} public routes
+  #commenting the below section as the new VPC and subnet will not be created. Instead an existing VPC & subnet IDs will be used.
+  # PublicRouteTable:
+  #   Type: AWS::EC2::RouteTable
+  #   Condition: isNotAppStream
+  #   Properties:
+  #     VpcId: !Ref VPC
+  #     Tags:
+  #       - Key: Name
+  #         Value: !Sub ${Namespace} public routes
 
-  DefaultPublicRoute:
-    Type: AWS::EC2::Route
-    Condition: isNotAppStream
-    DependsOn: InternetGatewayAttachment
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId: !Ref InternetGateway
+  # DefaultPublicRoute:
+  #   Type: AWS::EC2::Route
+  #   Condition: isNotAppStream
+  #   DependsOn: InternetGatewayAttachment
+  #   Properties:
+  #     RouteTableId: !Ref PublicRouteTable
+  #     DestinationCidrBlock: 0.0.0.0/0
+  #     GatewayId: !Ref InternetGateway
 
-  PublicSubnet1RouteTableAssociation:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Condition: isNotAppStream
-    Properties:
-      RouteTableId: !Ref PublicRouteTable
-      SubnetId: !Ref PublicSubnet1
+  # PublicSubnet1RouteTableAssociation:
+  #   Type: AWS::EC2::SubnetRouteTableAssociation
+  #   Condition: isNotAppStream
+  #   Properties:
+  #     RouteTableId: !Ref PublicRouteTable
+  #     SubnetId: !Ref PublicSubnet1
 
   EncryptionKey:
     Type: AWS::KMS::Key
