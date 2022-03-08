@@ -258,7 +258,7 @@ Resources:
             KmsKeyId: !Ref EncryptionKeyArn
             DeleteOnTermination: true
       NetworkInterfaces:
-        - AssociatePublicIpAddress: !If [ AppStreamEnabled, 'false', 'true' ]
+        - AssociatePublicIpAddress: true #!If [ AppStreamEnabled, 'false', 'true' ] #Assiging public IP address even if appstream is disabled.
           DeviceIndex: '0'
           GroupSet:
             - !Ref SecurityGroup
@@ -369,7 +369,7 @@ Outputs:
 
   Ec2WorkspacePublicIp:
     Description: Public IP address of the EC2 workspace instance
-    Condition: AppStreamDisabled
+    # Condition: AppStreamDisabled
     Value: !GetAtt [EC2Instance, PublicIp]
 
   Ec2WorkspaceInstanceId:
