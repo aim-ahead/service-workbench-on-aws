@@ -41,7 +41,7 @@ Parameters:
     Type: String
     AllowedValues: [true, false]
     Description: Is AppStream enabled for this workspace
-    Default: 'false'
+    Default: false
   VPC:
     Description: VPC for EMR nodes.
     Type: AWS::EC2::VPC::Id

@@ -84,7 +84,7 @@ Resources:
           - !Ref 'AWS::NoValue'
   PreSignedURLBoundary:
     Type: AWS::IAM::ManagedPolicy
-    Condition: AppStreamEnabled
+    # Condition: AppStreamEnabled # Blocking direct internet access even if appstream is not enabled.
     Properties:
       Description: Permission boundary for creating PreSignedURL
       ManagedPolicyName: !Join ['-', [Ref: Namespace, 'presigned-url-permission-boundary']]
@@ -125,7 +125,7 @@ Resources:
 
   IAMRoleSageMakerURL:
     Type: 'AWS::IAM::Role'
-    Condition: AppStreamEnabled
+    # Condition: AppStreamEnabled # Blocking direct internet access even if appstream is not enabled.
     Properties:
       RoleName: !Join ['-', [Ref: Namespace, 'presigned-url-sagemaker-notebook-role']]
       Path: '/'
@@ -147,10 +147,10 @@ Resources:
                 - sagemaker:CreatePresignedNotebookInstanceUrl
               Resource:
                 - !Ref BasicNotebookInstance
-              Condition:
-                StringEquals:
-                  aws:SourceVpce:
-                    Fn::ImportValue: !Sub '${SolutionNamespace}-SageMakerVPCE'
+              # Condition: #traffic is sent through firewall with vpc route table.
+              #   StringEquals:
+              #     aws:SourceVpce:
+              #       Fn::ImportValue: !Sub '${SolutionNamespace}-SageMakerVPCE'
       PermissionsBoundary: !Ref PreSignedURLBoundary
 
   IAMRole:
@@ -242,10 +242,11 @@ Resources:
           - AppStreamEnabled
           - Fn::ImportValue: !Sub '${SolutionNamespace}-WorkspaceSG'
           - !Ref 'AWS::NoValue'
-      DirectInternetAccess: !If
-        - AppStreamEnabled
-        - Disabled
-        - Enabled
+      # DirectInternetAccess: !If #Blocking direct internet access even if appstream is not enabled.
+      #   - AppStreamEnabled
+      #   - Disabled
+      #   - Enabled
+      DirectInternetAccess: Disabled
       LifecycleConfigName: !GetAtt BasicNotebookInstanceLifecycleConfig.NotebookInstanceLifecycleConfigName
       KmsKeyId: !Ref EncryptionKeyArn
 
@@ -329,15 +330,15 @@ Outputs:
 
   MetaConnectionRoleArn:
     Description: IAM Role to use for creating presigned URL
-    Condition: AppStreamEnabled
+    # Condition: AppStreamEnabled
     Value: !GetAtt IAMRoleSageMakerURL.Arn
 
   MetaConnectionRole:
     Description: IAM Role name to use for creating presigned URL
-    Condition: AppStreamEnabled
+    # Condition: AppStreamEnabled
     Value: !Ref IAMRoleSageMakerURL
 
   MetaConnectionPolicy:
     Description: Inline policy name that has use for creating presigned URL
-    Condition: AppStreamEnabled
+    # Condition: AppStreamEnabled
     Value: presigned-url-access
