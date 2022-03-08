@@ -71,7 +71,7 @@ function get_info() {
   echo "Env Name                           : ${ENV_NAME}"
   echo "Solution                           : ${solution_name}"
   echo "Website URL                        : ${WEBSITE_URL}"
-  echo "API Endpoint                       : ${API_ENDPOINT}"
+
 
   # only show profile and root password when running in an interactive terminal
   if [ -t 1 ] ; then

@@ -1,0 +1,14 @@
+lambdaProxyHandler:
+  handler: src/lambdas/lambda-proxy/handler.handler
+  role: LambdaProxyRole
+  description: Proxy between ALB and API GW.
+  timeout: 30
+  runtime: python3.9
+  events:
+      - alb:
+          listenerArn: !Ref ListenerHTTPS
+          priority: 2
+          conditions:
+            path: /api/*
+  environment:
+    APIGW_URL: ''
