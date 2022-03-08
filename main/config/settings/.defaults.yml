@@ -39,7 +39,6 @@ PrivateSubnet1: 'subnet-0651c99b497ff8e9d'
 
 PrivateSubnet2: 'subnet-053664d6820b28354'
 
-
 # Public subnets id
 PublicSubnet1: 'subnet-08cf30a0259ed0375'
 
