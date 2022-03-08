@@ -316,15 +316,16 @@ printf "\n\n\n--- Backend stack"
 buckets=("studydata" "external-templates" "env-type-configs" "environments-bootstrap-scripts")
 removeStack "Backend" "$SOLUTION_DIR/backend" "DONT_ASK_CONFIRMATION" ${buckets[@]}
 
-# -- Pre-Deployment stack
-printf "\n\n\n--- Pre-Deployment stack\n"
-removeStack "Pre-Deployment" "$SOLUTION_DIR/pre-deployment" "DONT_ASK_CONFIRMATION"
-
 # -- Infrastructure stack
 printf "\n\n\n--- Infrastructure stack"
 edgeLambdaFunctionName=$(getCfLambdaAssociations)
 buckets=("website" "logging")
 removeStack "Infrastructure" "$SOLUTION_DIR/infrastructure" "DONT_ASK_CONFIRMATION" ${buckets[@]}
+
+# -- Pre-Deployment stack
+printf "\n\n\n--- Pre-Deployment stack\n"
+removeStack "Pre-Deployment" "$SOLUTION_DIR/pre-deployment" "DONT_ASK_CONFIRMATION"
+
 
 # -- Prep-Master stack (master role)
 printf "\n\n\n--- Master-Account-Role stack"

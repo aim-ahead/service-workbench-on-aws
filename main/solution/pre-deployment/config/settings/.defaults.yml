@@ -13,3 +13,6 @@ dbStudiesAccountIdIndex: AccountIdIndex
 
 # DynamoDB table name for Data source accounts
 dbDsAccounts: ${self:custom.settings.dbPrefix}-DsAccounts
+
+# ECR Respository name for storing docker image
+ecrRespositoryName: ${self:custom.settings.globalNamespace}-repository
