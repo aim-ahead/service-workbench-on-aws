@@ -134,6 +134,13 @@ function force_new_esc_deployment() {
 
 componentDeploy "pre-deployment" "Pre-Deployment"
 
+# We now need to invoke the pre deployment lambda (we can do this locally)
+#$EXEC sls invoke local -f preDeployment -s $STAGE
+printf "\nInvoking pre-deployment steps\n\n"
+pushd "$SOLUTION_DIR/pre-deployment" > /dev/null
+$EXEC sls invoke -f preDeployment -s "$STAGE"
+popd > /dev/null
+
 #Upload the dockder image without build so that 'infrastructure' get reference.
 upload_docker_image_ecr_without_build
 
@@ -141,12 +148,7 @@ disableStats "infrastructure"
 componentDeploy "infrastructure" "Infrastructure"
 
 
-# We now need to invoke the pre deployment lambda (we can do this locally)
-#$EXEC sls invoke local -f preDeployment -s $STAGE
-printf "\nInvoking pre-deployment steps\n\n"
-pushd "$SOLUTION_DIR/pre-deployment" > /dev/null
-$EXEC sls invoke -f preDeployment -s "$STAGE"
-popd > /dev/null
+
 
 componentDeploy "backend" "Backend"
 
