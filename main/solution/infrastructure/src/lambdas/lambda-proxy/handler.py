@@ -59,6 +59,17 @@ def handler(event, context):
         response['body'] = json.dumps(r.json())
         response['headers'] = {'content-type': 'application/json; charset=utf-8'}
         
+    
+    if HTTP_METHOD == 'DELETE':
+        r = requests.delete(url = URL, headers=headers, json=body, params=params)
+        response["statusCode"] = 200
+        response["isBase64Encoded"] = False
+        response['body'] = json.dumps(r.json())
+        response['headers'] = {'content-type': 'application/json; charset=utf-8'}
+        
+        
+     
+
     print(response);
     
     return response;
