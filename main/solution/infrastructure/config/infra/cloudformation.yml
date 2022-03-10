@@ -105,7 +105,7 @@ Parameters:
   ServiceName:
     Type: String
       # update with the name of the service
-    Default: MyService
+    Default: ${self:custom.settings.namespace}
 
   ContainerPort:
     Type: Number
