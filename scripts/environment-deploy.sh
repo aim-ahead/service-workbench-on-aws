@@ -67,7 +67,7 @@ function upload_docker_image_ecr() {
   
   # docker commands
   aws ecr get-login-password --region $aws_region | docker login --username AWS --password-stdin $aws_account_number.dkr.ecr.$aws_region.amazonaws.com
-  docker build -t $ECR_Repository_Name .
+  docker build  --platform linux/amd64 -t $ECR_Repository_Name .
   docker tag $ECR_Repository_Name:latest $aws_account_number.dkr.ecr.$aws_region.amazonaws.com/$ECR_Repository_Name:latest
   docker push $aws_account_number.dkr.ecr.$aws_region.amazonaws.com/$ECR_Repository_Name:latest
 
@@ -91,7 +91,7 @@ function upload_docker_image_ecr_without_build() {
   npm run build
  
   aws ecr get-login-password --region $aws_region | docker login --username AWS --password-stdin $aws_account_number.dkr.ecr.$aws_region.amazonaws.com
-  docker build -t $ECR_Repository_Name .
+  docker build  --platform linux/amd64 -t $ECR_Repository_Name .
   docker tag $ECR_Repository_Name:latest $aws_account_number.dkr.ecr.$aws_region.amazonaws.com/$ECR_Repository_Name:latest
   docker push $aws_account_number.dkr.ecr.$aws_region.amazonaws.com/$ECR_Repository_Name:latest
 

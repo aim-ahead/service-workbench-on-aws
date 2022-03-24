@@ -4,6 +4,9 @@ Conditions:
     - !Equals ['${self:custom.settings.domainName}', '']
   UseHostedZoneId: !Not
     - !Equals ['${self:custom.settings.hostedZoneId}', '']
+
+  IsInternetFacing: !Equals ['${self:custom.settings.InternetFacing}', 'Yes']
+
   CustomDomainWithoutHostedZoneId: !And
     - !Not
       - !Equals ['${self:custom.settings.domainName}', '']
@@ -280,10 +283,10 @@ Resources:
       NetworkConfiguration: 
         AwsvpcConfiguration:
           # change to DISABLED if you're using private subnets that have access to a NAT gateway
-          AssignPublicIp: ENABLED
+          AssignPublicIp: DISABLED
           Subnets:
-            - '${self:custom.settings.PrivateSubnet1}'
-            - '${self:custom.settings.PrivateSubnet2}'
+            - '${self:custom.settings.ECSSubnet1}'
+            - '${self:custom.settings.ECSSubnet2}'
           SecurityGroups:
             - !Ref ContainerSecurityGroup
       LoadBalancers:
@@ -351,7 +354,7 @@ Resources:
       Port: 443
       Protocol: HTTPS
       Certificates:
-        - CertificateArn: 'arn:aws:acm:us-east-1:662475659167:certificate/1b8e7324-f618-47b1-ac15-6271473d493d'
+        - CertificateArn: ${self:custom.settings.certificateArn}
       DefaultActions:
         - TargetGroupArn: !Ref TargetGroup
           Type: forward
@@ -375,12 +378,15 @@ Resources:
           Value: 60
       Name: !Join ['', [!Ref ServiceName, LoadBalancer]]
       # "internal" is also an option
-      Scheme: internet-facing
+      Scheme: !If
+        - IsInternetFacing
+        - 'internet-facing'
+        - 'internal'
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
       Subnets:
-        - '${self:custom.settings.PublicSubnet1}'
-        - '${self:custom.settings.PublicSubnet2}'
+        - '${self:custom.settings.ALBSubnet1}'
+        - '${self:custom.settings.ALBSubnet2}'
 
   LogGroup:
     Type: AWS::Logs::LogGroup
