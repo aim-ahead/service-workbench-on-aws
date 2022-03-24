@@ -5,11 +5,9 @@ import os
 
 def handler(event, context):
     
-    print(event)
     URL = os.environ['APIGW_URL'] + event['path']
     HTTP_METHOD='';
     
-        
     headers={};
     response = {};
     body = {};
@@ -68,10 +66,6 @@ def handler(event, context):
         response['headers'] = {'content-type': 'application/json; charset=utf-8'}
         
         
-     
-
-    print(response);
-    
     return response;
   
  
