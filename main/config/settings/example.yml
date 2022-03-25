@@ -49,12 +49,13 @@
 #domainName: sw.example.com
 #certificateArn: arn:aws:acm:us-east-1:123456789012:certificate/abcdef01-abcd-ef01-2345-abcdef012345
 
-# Pre-VPC configuration
-
+# VPC configuration
 # VPC Id 
 VPC: ''
 
 # ALB Subnets (Public/Private)
+# For new Fisma SWB Environaments - Need Public subnets with IGW 
+# For Old Fisma environment - Subnets without IGW 
 ALBSubnet1: ''
 
 ALBSubnet2: ''
@@ -68,8 +69,6 @@ ECSSubnet2: ''
 # internal ALB (For Old Fisma environment). 
 # If you want internet-facing put value 'Yes' else 'No'
 InternetFacing: 'Yes'
-
-
 
 # Array of identity provider ids.
 # The usual practice is to keep this same as the domain name of the idp.
