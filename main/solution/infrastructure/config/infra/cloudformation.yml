@@ -307,27 +307,6 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole'
 
-  # LambdaProxyFunction:
-  #   Type: AWS::Lambda::Function
-  #   DependsOn: LambdaProxyRole
-  #   Properties:
-  #     FunctionName: 'proxyfunction'
-  #     Description: Lambda Function for Proxy
-  #     Runtime: python3.9
-  #     Code: lambdaproxy.zip
-  #     Handler: lambda_function.lambda_handler
-  #     MemorySize: 128
-  #     Timeout: 10
-  #     Role: !GetAtt LambdaProxyRole.Arn
-
-  # LambdaProxyPermission:
-  #   Type: AWS::Lambda::Permission
-  #   Properties:
-  #     FunctionName: !GetAtt 'LambdaProxyHandlerLambdaFunction.Arn'
-  #     Action: lambda:InvokeFunction
-  #     Principal: elasticloadbalancing.amazonaws.com
-    
-
   TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
