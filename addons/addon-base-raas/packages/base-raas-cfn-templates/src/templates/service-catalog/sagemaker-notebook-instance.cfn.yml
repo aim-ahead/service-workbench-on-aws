@@ -19,10 +19,6 @@ Parameters:
   Subnet:
     Description: Subnet for EMR nodes, from the VPC selected above
     Type: AWS::EC2::Subnet::Id
-  AccessFromCIDRBlock:
-    Type: String
-    Description: The CIDR used to access sagemaker. This parameter is only required when AppStream is disabled
-    Default: 10.0.0.0/19
   S3Mounts:
     Type: String
     Description: A JSON array of objects with name, bucket and prefix properties used to mount data
@@ -43,15 +39,10 @@ Parameters:
   EgressStoreIamPolicyDocument:
     Type: String
     Description: The IAM policy for launched workstation to access egress store
-  IsAppStreamEnabled:
-    Type: String
-    Description: Boolean for whether workspace should be accessed with AppStream
-    AllowedValues: [true, false]
 
 Conditions:
   IamPolicyEmpty: !Equals [!Ref IamPolicyDocument, '{}']
   EgressStoreIamPolicyEmpty: !Equals [!Ref EgressStoreIamPolicyDocument, '{}']
-  AppStreamEnabled: !Equals [!Ref IsAppStreamEnabled, 'true']
 
 Resources:
   SecurityGroup:
@@ -61,30 +52,12 @@ Resources:
       VpcId:
         Ref: VPC
       SecurityGroupIngress:
-        - !If
-          - AppStreamEnabled
-          - !Ref 'AWS::NoValue'
-          - IpProtocol: tcp
-            FromPort: 443
-            ToPort: 443
-            CidrIp: !Ref AccessFromCIDRBlock
-      SecurityGroupEgress:
-        - !If
-          - AppStreamEnabled
-          - DestinationSecurityGroupId:
-              Fn::ImportValue: !Sub '${SolutionNamespace}-SageMakerApiSecurityGroup'
-            IpProtocol: '-1'
-          - !Ref 'AWS::NoValue'
-        - !If
-          - AppStreamEnabled
-          - IpProtocol: tcp
-            FromPort: 0
-            ToPort: 65535
-            CidrIp: 0.0.0.0/0
-          - !Ref 'AWS::NoValue'
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
   PreSignedURLBoundary:
     Type: AWS::IAM::ManagedPolicy
-    # Condition: AppStreamEnabled # Blocking direct internet access even if appstream is not enabled.
     Properties:
       Description: Permission boundary for creating PreSignedURL
       ManagedPolicyName: !Join ['-', [Ref: Namespace, 'presigned-url-permission-boundary']]
@@ -125,7 +98,6 @@ Resources:
 
   IAMRoleSageMakerURL:
     Type: 'AWS::IAM::Role'
-    # Condition: AppStreamEnabled # Blocking direct internet access even if appstream is not enabled.
     Properties:
       RoleName: !Join ['-', [Ref: Namespace, 'presigned-url-sagemaker-notebook-role']]
       Path: '/'
@@ -238,14 +210,6 @@ Resources:
       SubnetId: !Ref Subnet
       SecurityGroupIds:
         - !Ref SecurityGroup
-        - !If
-          - AppStreamEnabled
-          - Fn::ImportValue: !Sub '${SolutionNamespace}-WorkspaceSG'
-          - !Ref 'AWS::NoValue'
-      # DirectInternetAccess: !If #Blocking direct internet access even if appstream is not enabled.
-      #   - AppStreamEnabled
-      #   - Disabled
-      #   - Enabled
       DirectInternetAccess: Disabled
       LifecycleConfigName: !GetAtt BasicNotebookInstanceLifecycleConfig.NotebookInstanceLifecycleConfigName
       KmsKeyId: !Ref EncryptionKeyArn
@@ -330,15 +294,12 @@ Outputs:
 
   MetaConnectionRoleArn:
     Description: IAM Role to use for creating presigned URL
-    # Condition: AppStreamEnabled
     Value: !GetAtt IAMRoleSageMakerURL.Arn
 
   MetaConnectionRole:
     Description: IAM Role name to use for creating presigned URL
-    # Condition: AppStreamEnabled
     Value: !Ref IAMRoleSageMakerURL
 
   MetaConnectionPolicy:
     Description: Inline policy name that has use for creating presigned URL
-    # Condition: AppStreamEnabled
     Value: presigned-url-access
