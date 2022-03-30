@@ -136,8 +136,8 @@ Metadata:
       - Label:
           default: Deployment Configuration
         Parameters:
-          - VpcCidr
-          - PublicSubnetCidr
+          - VPC
+          - PublicSubnet1
 
 # Resources linked to AppStream conditions are evaluated further prior to getting sent to CloudFormation
 # Take a look at addons/addon-base-raas/packages/base-raas-services/lib/cfn-templates/cfn-template-service.getTemplate()
