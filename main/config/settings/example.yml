@@ -70,6 +70,10 @@ ECSSubnet2: ''
 # If you want internet-facing put value 'Yes' else 'No'
 InternetFacing: 'Yes'
 
+#HostedZone Id which you created manually in main account
+
+HostedZoneId: 'Z02455261RJ9QQPVHFZGA'
+
 # Array of identity provider ids.
 # The usual practice is to keep this same as the domain name of the idp.
 # For example, when connecting with an IdP that has users "user1@example.com", "user2@example.com" etc then
