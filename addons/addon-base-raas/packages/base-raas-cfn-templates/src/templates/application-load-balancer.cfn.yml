@@ -16,6 +16,20 @@ Parameters:
   ACMSSLCertARN:
     Type: String
     Description: The ARN of the AWS Certificate Manager SSL Certificate to associate with the Load Balancer
+  IsAppStreamEnabled:
+    Type: String
+    AllowedValues: [true, false]
+    Description: Is AppStream enabled for this workspace
+  AppStreamSG:
+    Type: String
+    Description: AppStream Security Group ID
+  PublicRouteTableId:
+    Type: String
+    Description: Public Route Table ID
+  LoggingBucket:
+    Type: String
+    Description: Bucket for ELB Logs
+
 Resources:
   ALBListener:
      Type: AWS::ElasticLoadBalancingV2::Listener
