@@ -622,7 +622,7 @@ Outputs:
 
   HostedZoneId:
     Description: Id of the hosted zone created when a custom domain is used
-    Value: '1234567890'
+    Value: '${self:custom.settings.HostedzoneId}'
 
   LambdaProxyArn:
     Description: Arn of Lambda Proxy Function
