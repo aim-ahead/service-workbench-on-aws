@@ -227,8 +227,9 @@ async function updateEnvOnProvisioningSuccess({
         const hostedZoneId = await getHostedZone(requestContext, environmentScService, existingEnvRecord);
         await environmentDnsService.createPrivateRecord(requestContext, 'rstudio', envId, privateIp, hostedZoneId);
       } else {
-        const dnsName = _.find(outputs, o => o.OutputKey === 'Ec2WorkspaceDnsName').OutputValue;
-        await environmentDnsService.createRecord('rstudio', envId, dnsName);
+        // Commented following code because we do not want to create DNS record. We are doing this manually.
+        // const dnsName = _.find(outputs, o => o.OutputKey === 'Ec2WorkspaceDnsName').OutputValue;
+        // await environmentDnsService.createRecord('rstudio', envId, dnsName);
       }
     } else if (connectionTypeValue.toLowerCase() === 'rstudiov2') {
       const albService = await container.find('albService');
@@ -236,29 +237,31 @@ async function updateEnvOnProvisioningSuccess({
       if (!deploymentItem) {
         throw new Error(`Error provisioning environment. Reason: No ALB found for this AWS account`);
       }
-      const deploymentValue = JSON.parse(deploymentItem.value);
-      const dnsName = deploymentValue.albDnsName;
+      // Commented following code because we do not want to create DNS record. We are doing this manually.
+      // const deploymentValue = JSON.parse(deploymentItem.value);
+      // const dnsName = deploymentValue.albDnsName;
       const targetGroupArn = _.find(outputs, o => o.OutputKey === 'TargetGroupARN').OutputValue;
       // Create DNS record for RStudio workspaces
-      const environmentDnsService = await container.find('environmentDnsService');
+      // const environmentDnsService = await container.find('environmentDnsService');
       const settings = await container.find('settings');
       if (settings.getBoolean(settingKeys.isAppStreamEnabled)) {
-        const hostedZoneId = await getHostedZone(requestContext, environmentScService, existingEnvRecord);
-        const albHostedZoneId = await albService.getAlbHostedZoneID(
-          requestContext,
-          resolvedVars,
-          deploymentValue.albArn,
-        );
-        await environmentDnsService.createPrivateRecordForDNS(
-          requestContext,
-          'rstudio',
-          envId,
-          albHostedZoneId,
-          dnsName,
-          hostedZoneId,
-        );
+        // const hostedZoneId = await getHostedZone(requestContext, environmentScService, existingEnvRecord);
+        // const albHostedZoneId = await albService.getAlbHostedZoneID(
+        //   requestContext,
+        //   resolvedVars,
+        //   deploymentValue.albArn,
+        // );
+        // await environmentDnsService.createPrivateRecordForDNS(
+        //   requestContext,
+        //   'rstudio',
+        //   envId,
+        //   albHostedZoneId,
+        //   dnsName,
+        //   hostedZoneId,
+        // );
       } else {
-        await environmentDnsService.createRecord('rstudio', envId, dnsName);
+        // Commented following code because we do not want to create DNS record. We are doing this manually.
+        // await environmentDnsService.createRecord('rstudio', envId, dnsName);
       }
       // Create a listener rule
       const lockService = await container.find('lockService');
