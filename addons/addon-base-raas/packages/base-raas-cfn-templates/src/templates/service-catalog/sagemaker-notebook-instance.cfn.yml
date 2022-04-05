@@ -39,10 +39,15 @@ Parameters:
   EgressStoreIamPolicyDocument:
     Type: String
     Description: The IAM policy for launched workstation to access egress store
+  IsAppStreamEnabled:
+    Type: String
+    Description: Boolean for whether workspace should be accessed with AppStream
+    AllowedValues: [true, false]
 
 Conditions:
   IamPolicyEmpty: !Equals [!Ref IamPolicyDocument, '{}']
   EgressStoreIamPolicyEmpty: !Equals [!Ref EgressStoreIamPolicyDocument, '{}']
+  AppStreamEnabled: !Equals [!Ref IsAppStreamEnabled, 'true']
 
 Resources:
   SecurityGroup:
