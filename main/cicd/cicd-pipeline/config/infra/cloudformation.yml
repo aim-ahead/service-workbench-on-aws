@@ -256,8 +256,9 @@ Resources:
               - apigateway:*
               - ecr:*
               - iam:GetRole
-              - ecs:UpdateService
+              - ecs:*
               - lambda:*
+              - elasticloadbalancing:*
             Effect: Allow
             Resource: '*'
           - Action:
