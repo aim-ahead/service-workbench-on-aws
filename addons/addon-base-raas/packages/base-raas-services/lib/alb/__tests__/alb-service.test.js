@@ -315,6 +315,14 @@ describe('ALBService', () => {
             ParameterKey: 'LoggingBucket',
             ParameterValue: 'samplelogbucket',
           },
+          {
+            ParameterKey: 'ALBSubnet1',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet2',
+            ParameterValue: 'Value',
+          },
         ],
         TemplateBody: ['template'],
         Tags: [
