@@ -341,6 +341,8 @@ describe('ALBService', () => {
       const resolvedInputParams = [
         { Key: 'ACMSSLCertARN', Value: 'Value' },
         { Key: 'IsAppStreamEnabled', Value: 'false' },
+        { Key: 'ALBSubnet1', Value: 'Value' },
+        { Key: 'ALBSubnet2', Value: 'Value' },
       ];
       service.findAwsAccountDetails = jest.fn(() => {
         return {
@@ -382,6 +384,14 @@ describe('ALBService', () => {
           {
             ParameterKey: 'LoggingBucket',
             ParameterValue: 'samplelogbucket',
+          },
+          {
+            ParameterKey: 'ALBSubnet1',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet2',
+            ParameterValue: 'Value',
           },
         ],
         TemplateBody: ['template'],
