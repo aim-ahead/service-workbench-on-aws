@@ -255,6 +255,9 @@ Resources:
               - cloudfront:*
               - apigateway:*
               - ecr:*
+              - iam:GetRole
+              - ecs:UpdateService
+              - lambda:*
             Effect: Allow
             Resource: '*'
           - Action:
