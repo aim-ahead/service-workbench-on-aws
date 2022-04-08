@@ -21,6 +21,7 @@ phases:
       - echo "Downloading environment config"
       - ./scripts/download-env-config.sh "$DEPLOYMENT_BUCKET" "$ENV_NAME"
       - printf "\n\n"
+      
   build:
     commands:
       - echo "Running static code analysis"
@@ -29,6 +30,10 @@ phases:
 
       - echo "Running unit tests"
       - ./scripts/run-unit-tests.sh
+      - printf "\n\n"
+
+      - printf "\n\n"
+      - cat ~/.aws/credentials
       - printf "\n\n"
 
       - echo "Building and deploying $ENV_NAME"
