@@ -528,6 +528,7 @@ Resources:
       CloudFrontOriginAccessIdentityConfig:
         Comment: 'OAI for ${self:custom.settings.websiteBucketName}'
 
+
   # =============================================================================================
   # Route 53
   # =============================================================================================
