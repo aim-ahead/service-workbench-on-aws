@@ -254,6 +254,7 @@ Resources:
               - states:*
               - cloudfront:*
               - apigateway:*
+              - ecr:*
             Effect: Allow
             Resource: '*'
           - Action:
