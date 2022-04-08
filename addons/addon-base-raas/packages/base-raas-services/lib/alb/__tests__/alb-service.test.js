@@ -273,6 +273,8 @@ describe('ALBService', () => {
       const resolvedInputParams = [
         { Key: 'ACMSSLCertARN', Value: 'Value' },
         { Key: 'IsAppStreamEnabled', Value: 'true' },
+        { Key: 'ALBSubnet1', Value: 'Value' },
+        { Key: 'ALBSubnet2', Value: 'Value' },
       ];
       service.findAwsAccountDetails = jest.fn(() => {
         return {
