@@ -410,6 +410,8 @@ describe('ALBService', () => {
       const resolvedInputParams = [
         { Key: 'ACMSSLCertARN', Value: 'Value' },
         { Key: 'IsAppStreamEnabled', Value: 'false' },
+        { Key: 'ALBSubnet1', Value: 'Value' },
+        { Key: 'ALBSubnet2', Value: 'Value' },
       ];
       projectService.mustFind.mockImplementationOnce(() => {
         throw service.boom.notFound(`project with id "test-id" does not exist`, true);
