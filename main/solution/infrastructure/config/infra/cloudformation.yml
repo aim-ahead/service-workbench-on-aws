@@ -75,46 +75,12 @@ Parameters:
     Type: String
     Default: myenv
 
-  InstanceType:
-    Description: Which instance type should we use to build the ECS cluster?
-    Type: String
-    Default: c4.large
-
-  ClusterSize:
-    Description: How many ECS hosts do you want to initially deploy?
-    Type: Number
-    Default: 4
-
-  DesiredCount:
-    Description: How many instances of this task should we run across our cluster?
-    Type: Number
-    Default: 4
-
-  Path:
-    Description: The path to register with the Application Load Balancer
-    Type: String
-    Default: /
-
-  MaxCount:
-    Description: Maximum number of instances of this task we can run across our cluster
-    Type: Number
-    Default: 4
-
-  ECSAMI:
-    Description: ECS-Optimized AMI ID
-    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
-    Default: /aws/service/ecs/optimized-ami/amazon-linux/recommended/image_id
-
   ServiceName:
     Type: String
       # update with the name of the service
     Default: ${self:custom.settings.namespace}
 
   ContainerPort:
-    Type: Number
-    Default: 80
-
-  LoadBalancerPort:
     Type: Number
     Default: 80
 
@@ -268,7 +234,7 @@ Resources:
     Type: AWS::ECS::Service
     # This dependency is needed so that the load balancer is setup correctly in time
     DependsOn:
-      - ListenerHTTP
+      - ListenerHTTPS
     Properties: 
       ServiceName: !Ref ServiceName
       Cluster: !Ref Cluster
@@ -337,16 +303,6 @@ Resources:
       DefaultActions:
         - TargetGroupArn: !Ref TargetGroup
           Type: forward
-
-  ListenerHTTP:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      DefaultActions:
-        - TargetGroupArn: !Ref TargetGroup
-          Type: forward
-      LoadBalancerArn: !Ref LoadBalancer
-      Port: !Ref LoadBalancerPort
-      Protocol: HTTP
 
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -571,6 +527,7 @@ Resources:
     Properties:
       CloudFrontOriginAccessIdentityConfig:
         Comment: 'OAI for ${self:custom.settings.websiteBucketName}'
+
 
   # =============================================================================================
   # Route 53

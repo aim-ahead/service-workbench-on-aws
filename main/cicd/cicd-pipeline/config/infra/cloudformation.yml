@@ -255,6 +255,13 @@ Resources:
               - cloudfront:*
               - apigateway:*
               - ecr:*
+              - iam:*
+              - ecs:*
+              - lambda:*
+              - elasticloadbalancing:*
+              - ec2:*
+              - logs:*
+              - application-autoscaling:*
             Effect: Allow
             Resource: '*'
           - Action:
@@ -679,6 +686,7 @@ Resources:
       Environment:
         ComputeType: BUILD_GENERAL1_LARGE
         Type: LINUX_CONTAINER
+        PrivilegedMode: "true"
         Image: aws/codebuild/amazonlinux2-x86_64-standard:2.0
         EnvironmentVariables:
           - Name: DEPLOYMENT_BUCKET

@@ -273,6 +273,8 @@ describe('ALBService', () => {
       const resolvedInputParams = [
         { Key: 'ACMSSLCertARN', Value: 'Value' },
         { Key: 'IsAppStreamEnabled', Value: 'true' },
+        { Key: 'ALBSubnet1', Value: 'Value' },
+        { Key: 'ALBSubnet2', Value: 'Value' },
       ];
       service.findAwsAccountDetails = jest.fn(() => {
         return {
@@ -293,6 +295,14 @@ describe('ALBService', () => {
           },
           {
             ParameterKey: 'ACMSSLCertARN',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet1',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet2',
             ParameterValue: 'Value',
           },
           {
@@ -331,6 +341,8 @@ describe('ALBService', () => {
       const resolvedInputParams = [
         { Key: 'ACMSSLCertARN', Value: 'Value' },
         { Key: 'IsAppStreamEnabled', Value: 'false' },
+        { Key: 'ALBSubnet1', Value: 'Value' },
+        { Key: 'ALBSubnet2', Value: 'Value' },
       ];
       service.findAwsAccountDetails = jest.fn(() => {
         return {
@@ -351,6 +363,14 @@ describe('ALBService', () => {
           },
           {
             ParameterKey: 'ACMSSLCertARN',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet1',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet2',
             ParameterValue: 'Value',
           },
           {
@@ -390,6 +410,8 @@ describe('ALBService', () => {
       const resolvedInputParams = [
         { Key: 'ACMSSLCertARN', Value: 'Value' },
         { Key: 'IsAppStreamEnabled', Value: 'false' },
+        { Key: 'ALBSubnet1', Value: 'Value' },
+        { Key: 'ALBSubnet2', Value: 'Value' },
       ];
       projectService.mustFind.mockImplementationOnce(() => {
         throw service.boom.notFound(`project with id "test-id" does not exist`, true);

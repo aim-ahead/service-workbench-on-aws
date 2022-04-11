@@ -219,8 +219,8 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      environmentDnsService.deleteRecord.mockImplementationOnce(() => {});
-      albService.deleteListenerRule.mockImplementationOnce(() => {});
+      environmentDnsService.deleteRecord.mockImplementationOnce(() => { });
+      albService.deleteListenerRule.mockImplementationOnce(() => { });
       await step.start();
       expect(environmentDnsService.deleteRecord).not.toHaveBeenCalled();
       expect(albService.deleteListenerRule).not.toHaveBeenCalled();
@@ -276,7 +276,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      environmentDnsService.deleteRecord.mockImplementationOnce(() => {});
+      environmentDnsService.deleteRecord.mockImplementationOnce(() => { });
       await step.start();
       expect(environmentDnsService.deleteRecord).toHaveBeenCalled();
     });
@@ -297,7 +297,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      environmentDnsService.deleteRecord.mockImplementationOnce(() => {});
+      environmentDnsService.deleteRecord.mockImplementationOnce(() => { });
       await step.start();
       expect(environmentDnsService.deleteRecord).not.toHaveBeenCalled();
     });
@@ -318,7 +318,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      albService.deleteListenerRule.mockImplementationOnce(() => {});
+      albService.deleteListenerRule.mockImplementationOnce(() => { });
       await step.start();
       expect(albService.deleteListenerRule).toHaveBeenCalled();
     });
@@ -339,7 +339,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      albService.deleteListenerRule.mockImplementationOnce(() => {});
+      albService.deleteListenerRule.mockImplementationOnce(() => { });
       await step.start();
       expect(albService.deleteListenerRule).not.toHaveBeenCalled();
     });
@@ -357,7 +357,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      jest.spyOn(step, 'checkAndTerminateAlb').mockImplementationOnce(() => {});
+      jest.spyOn(step, 'checkAndTerminateAlb').mockImplementationOnce(() => { });
       await step.start();
       expect(step.checkAndTerminateAlb).not.toHaveBeenCalled();
     });
@@ -375,7 +375,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      jest.spyOn(step, 'checkAndTerminateAlb').mockImplementationOnce(() => {});
+      jest.spyOn(step, 'checkAndTerminateAlb').mockImplementationOnce(() => { });
       await step.start();
       expect(step.checkAndTerminateAlb).toHaveBeenCalled();
     });
@@ -396,7 +396,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      environmentDnsService.deleteRecord.mockImplementationOnce(() => {});
+      environmentDnsService.deleteRecord.mockImplementationOnce(() => { });
       await step.start();
       expect(environmentScCidrService.revokeIngressRuleWithSecurityGroup).toHaveBeenCalled();
     });
@@ -417,7 +417,7 @@ describe('TerminateLaunchDependencyStep', () => {
       jest.spyOn(step, 'getTemplateOutputs').mockImplementationOnce(() => {
         return templateOutputs;
       });
-      environmentDnsService.deleteRecord.mockImplementationOnce(() => {});
+      environmentDnsService.deleteRecord.mockImplementationOnce(() => { });
       await step.start();
       expect(environmentScCidrService.revokeIngressRuleWithSecurityGroup).not.toHaveBeenCalled();
     });
@@ -448,7 +448,7 @@ describe('TerminateLaunchDependencyStep', () => {
       albService.checkAlbExists.mockImplementationOnce(() => {
         return true;
       });
-      jest.spyOn(step, 'terminateStack').mockImplementationOnce(() => {});
+      jest.spyOn(step, 'terminateStack').mockImplementationOnce(() => { });
       await step.checkAndTerminateAlb('test-project-id', 'test-external-id');
       // CHECK
       expect(step.terminateStack).not.toHaveBeenCalled();
@@ -462,7 +462,7 @@ describe('TerminateLaunchDependencyStep', () => {
       albService.checkAlbExists.mockImplementationOnce(() => {
         return false;
       });
-      jest.spyOn(step, 'terminateStack').mockImplementationOnce(() => {});
+      jest.spyOn(step, 'terminateStack').mockImplementationOnce(() => { });
       await step.checkAndTerminateAlb('test-project-id', 'test-external-id');
       // CHECK
       expect(step.terminateStack).not.toHaveBeenCalled();
@@ -478,7 +478,7 @@ describe('TerminateLaunchDependencyStep', () => {
       });
       step.checkPendingEnvWithSSLCert = jest.fn(() => Promise.resolve(true));
 
-      jest.spyOn(step, 'terminateStack').mockImplementationOnce(() => {});
+      jest.spyOn(step, 'terminateStack').mockImplementationOnce(() => { });
 
       // OPERATE
       await step.checkAndTerminateAlb('test-project-id', 'test-external-id');
@@ -494,7 +494,7 @@ describe('TerminateLaunchDependencyStep', () => {
       albService.checkAlbExists.mockImplementationOnce(() => {
         return true;
       });
-      jest.spyOn(step, 'checkAndTerminateAlb').mockImplementationOnce(() => {});
+      jest.spyOn(step, 'checkAndTerminateAlb').mockImplementationOnce(() => { });
       await step.checkAndTerminateAlb('test-project-id', 'test-external-id');
       // CHECK
       expect(step.checkAndTerminateAlb).toHaveBeenCalled();
@@ -514,7 +514,7 @@ describe('TerminateLaunchDependencyStep', () => {
     it('should call delete stack and set stack id on success', async () => {
       cfn.deleteStack = jest.fn().mockImplementation(() => {
         return {
-          promise: () => {},
+          promise: () => { },
         };
       });
       step.getCloudFormationService = jest.fn().mockResolvedValue(cfn);
@@ -529,7 +529,7 @@ describe('TerminateLaunchDependencyStep', () => {
     it('should return resolved promise', async () => {
       cfn.deleteStack = jest.fn().mockImplementation(() => {
         return {
-          promise: () => {},
+          promise: () => { },
         };
       });
       step.getCloudFormationService = jest.fn().mockResolvedValue(cfn);
@@ -564,7 +564,7 @@ describe('TerminateLaunchDependencyStep', () => {
       albService.findAwsAccountId.mockImplementationOnce(() => {
         return 'test-account-id';
       });
-      jest.spyOn(albService, 'saveAlbDetails').mockImplementationOnce(() => {});
+      jest.spyOn(albService, 'saveAlbDetails').mockImplementationOnce(() => { });
       const albDetails = {
         id: 'test-account-id',
         albStackName: null,

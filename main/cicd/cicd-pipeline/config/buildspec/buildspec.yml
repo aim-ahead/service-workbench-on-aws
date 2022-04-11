@@ -21,6 +21,7 @@ phases:
       - echo "Downloading environment config"
       - ./scripts/download-env-config.sh "$DEPLOYMENT_BUCKET" "$ENV_NAME"
       - printf "\n\n"
+      
   build:
     commands:
       - echo "Running static code analysis"
