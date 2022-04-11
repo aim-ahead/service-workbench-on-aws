@@ -780,24 +780,6 @@ describe('TerminateLaunchDependencyStep', () => {
               Description: 'The ARN of the AWS Certificate Manager SSL Certificate to associate with the Load Balancer',
               ParameterKey: 'ACMSSLCertARN',
             },
-            {
-              IsNoEcho: false,
-              ParameterConstraints: {
-                AllowedValues: [],
-              },
-              ParameterType: 'AWS::EC2::Subnet::Id',
-              Description: 'ALBSubnet1',
-              ParameterKey: 'ALBSubnet1',
-            },
-            {
-              IsNoEcho: false,
-              ParameterConstraints: {
-                AllowedValues: [],
-              },
-              ParameterType: 'AWS::EC2::Subnet::Id',
-              Description: 'ALBSubnet2',
-              ParameterKey: 'ALBSubnet2',
-            },
           ],
         }),
       );
