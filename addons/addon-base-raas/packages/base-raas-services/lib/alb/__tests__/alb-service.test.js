@@ -335,10 +335,11 @@ describe('ALBService', () => {
         ],
       };
       const response = await service.getStackCreationInput({}, resolvedVars, resolvedInputParams, 'project_id');
+      /* eslint-disable no-console */
       console.log(response);
-      console.log("---------------------------");
+      console.log('---------------------------');
       console.log(apiResponse);
-
+      /* eslint-enable no-console */
       expect(response).toEqual(apiResponse);
     });
     it('should pass and return the stack creation input with success', async () => {
@@ -407,9 +408,11 @@ describe('ALBService', () => {
         ],
       };
       const response = await service.getStackCreationInput({}, resolvedVars, resolvedInputParams, 'project_id');
+      /* eslint-disable no-console */
       console.log(response);
-      console.log("---------------------------");
+      console.log('---------------------------');
       console.log(apiResponse);
+      /* eslint-enable no-console */
       expect(response).toEqual(apiResponse);
     });
 
