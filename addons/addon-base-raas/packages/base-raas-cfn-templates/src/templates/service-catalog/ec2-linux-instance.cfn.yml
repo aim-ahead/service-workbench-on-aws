@@ -36,6 +36,13 @@ Parameters:
   Subnet:
     Description: The VPC subnet in which the EC2 instance will reside
     Type: AWS::EC2::Subnet::Id
+  SubnetCIDR:
+    Description: CIDR range to block the traffic with other resources in the same subnet
+    Type: String
+    AllowedPattern: >-
+      ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/(1[6-9]|2[0-8]))$
+    ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/16-28
+    Default: 10.0.0.0/16
   EnvironmentInstanceFiles:
     Type: String
     Description: >-
@@ -212,6 +219,7 @@ Resources:
           aws s3 cp "${EnvironmentInstanceFiles}/get_bootstrap.sh" "/tmp"
           chmod 500 "/tmp/get_bootstrap.sh"
           /tmp/get_bootstrap.sh "${EnvironmentInstanceFiles}" '${S3Mounts}'
+          iptables -A INPUT -s ${SubnetCIDR} -j DROP
 
           # Signal result to CloudFormation
           /opt/aws/bin/cfn-signal -e $? --stack "${AWS::StackName}" --resource "EC2Instance" --region "${AWS::Region}"
