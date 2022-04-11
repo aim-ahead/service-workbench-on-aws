@@ -298,6 +298,14 @@ describe('ALBService', () => {
             ParameterValue: 'Value',
           },
           {
+            ParameterKey: 'ALBSubnet1',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet2',
+            ParameterValue: 'Value',
+          },
+          {
             ParameterKey: 'VPC',
             ParameterValue: 'vpc-096b034133955abba',
           },
@@ -316,14 +324,6 @@ describe('ALBService', () => {
           {
             ParameterKey: 'LoggingBucket',
             ParameterValue: 'samplelogbucket',
-          },
-          {
-            ParameterKey: 'ALBSubnet1',
-            ParameterValue: 'Value',
-          },
-          {
-            ParameterKey: 'ALBSubnet2',
-            ParameterValue: 'Value',
           },
         ],
         TemplateBody: ['template'],
@@ -371,6 +371,14 @@ describe('ALBService', () => {
             ParameterValue: 'Value',
           },
           {
+            ParameterKey: 'ALBSubnet1',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'ALBSubnet2',
+            ParameterValue: 'Value',
+          },
+          {
             ParameterKey: 'VPC',
             ParameterValue: 'vpc-096b034133955abba',
           },
@@ -389,14 +397,6 @@ describe('ALBService', () => {
           {
             ParameterKey: 'LoggingBucket',
             ParameterValue: 'samplelogbucket',
-          },
-          {
-            ParameterKey: 'ALBSubnet1',
-            ParameterValue: 'Value',
-          },
-          {
-            ParameterKey: 'ALBSubnet2',
-            ParameterValue: 'Value',
           },
         ],
         TemplateBody: ['template'],
