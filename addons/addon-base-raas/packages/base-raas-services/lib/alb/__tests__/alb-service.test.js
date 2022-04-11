@@ -335,6 +335,10 @@ describe('ALBService', () => {
         ],
       };
       const response = await service.getStackCreationInput({}, resolvedVars, resolvedInputParams, 'project_id');
+      console.log(response);
+      console.log("---------------------------");
+      console.log(apiResponse);
+
       expect(response).toEqual(apiResponse);
     });
     it('should pass and return the stack creation input with success', async () => {
@@ -403,6 +407,9 @@ describe('ALBService', () => {
         ],
       };
       const response = await service.getStackCreationInput({}, resolvedVars, resolvedInputParams, 'project_id');
+      console.log(response);
+      console.log("---------------------------");
+      console.log(apiResponse);
       expect(response).toEqual(apiResponse);
     });
 
