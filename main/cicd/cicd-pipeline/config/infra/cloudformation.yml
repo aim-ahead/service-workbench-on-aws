@@ -255,10 +255,15 @@ Resources:
               - cloudfront:*
               - apigateway:*
               - ecr:*
-              - iam:GetRole
+              - iam:*
               - ecs:*
               - lambda:*
               - elasticloadbalancing:*
+              - ec2:*
+              - logs:*
+              - application-autoscaling:*
+
+            
             Effect: Allow
             Resource: '*'
           - Action:
