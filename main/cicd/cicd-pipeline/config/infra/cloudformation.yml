@@ -262,8 +262,6 @@ Resources:
               - ec2:*
               - logs:*
               - application-autoscaling:*
-
-            
             Effect: Allow
             Resource: '*'
           - Action:
