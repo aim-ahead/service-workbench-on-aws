@@ -92,6 +92,7 @@ class ALBService extends Service {
     const certificateArn = _.find(resolvedInputParams, o => o.Key === 'ACMSSLCertARN');
     const ALBSubnet1 = _.find(resolvedInputParams, o => o.Key === 'ALBSubnet1');
     const ALBSubnet2 = _.find(resolvedInputParams, o => o.Key === 'ALBSubnet2');
+    const LoadBalancerType = _.find(resolvedInputParams, o => o.Key === 'LoadBalancerType');
     const isAppStreamEnabled = _.find(resolvedInputParams, o => o.Key === 'IsAppStreamEnabled');
 
     const addParam = (key, v) => cfnParams.push({ ParameterKey: key, ParameterValue: v });
@@ -99,6 +100,7 @@ class ALBService extends Service {
     addParam('ACMSSLCertARN', certificateArn.Value);
     addParam('ALBSubnet1', ALBSubnet1.Value);
     addParam('ALBSubnet2', ALBSubnet2.Value);
+    addParam('LoadBalancerType', LoadBalancerType.Value);
     addParam('VPC', awsAccountDetails.vpcId);
     addParam('IsAppStreamEnabled', isAppStreamEnabled.Value);
     addParam(
