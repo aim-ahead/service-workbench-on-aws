@@ -275,6 +275,7 @@ describe('ALBService', () => {
         { Key: 'IsAppStreamEnabled', Value: 'true' },
         { Key: 'ALBSubnet1', Value: 'Value' },
         { Key: 'ALBSubnet2', Value: 'Value' },
+        { Key: 'LoadBalancerType', Value: 'Value' },
       ];
       service.findAwsAccountDetails = jest.fn(() => {
         return {
@@ -303,6 +304,10 @@ describe('ALBService', () => {
           },
           {
             ParameterKey: 'ALBSubnet2',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'LoadBalancerType',
             ParameterValue: 'Value',
           },
           {
@@ -343,6 +348,7 @@ describe('ALBService', () => {
         { Key: 'IsAppStreamEnabled', Value: 'false' },
         { Key: 'ALBSubnet1', Value: 'Value' },
         { Key: 'ALBSubnet2', Value: 'Value' },
+        { Key: 'LoadBalancerType', Value: 'Value' },
       ];
       service.findAwsAccountDetails = jest.fn(() => {
         return {
@@ -371,6 +377,10 @@ describe('ALBService', () => {
           },
           {
             ParameterKey: 'ALBSubnet2',
+            ParameterValue: 'Value',
+          },
+          {
+            ParameterKey: 'LoadBalancerType',
             ParameterValue: 'Value',
           },
           {
@@ -412,6 +422,7 @@ describe('ALBService', () => {
         { Key: 'IsAppStreamEnabled', Value: 'false' },
         { Key: 'ALBSubnet1', Value: 'Value' },
         { Key: 'ALBSubnet2', Value: 'Value' },
+        { Key: 'LoadBalancerType', Value: 'Value' },
       ];
       projectService.mustFind.mockImplementationOnce(() => {
         throw service.boom.notFound(`project with id "test-id" does not exist`, true);

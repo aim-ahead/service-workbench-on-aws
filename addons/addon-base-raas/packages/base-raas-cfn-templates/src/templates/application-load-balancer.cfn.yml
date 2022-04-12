@@ -13,6 +13,9 @@ Parameters:
   ALBSubnet2:
     Description: The VPC subnet 2 in which the Application load Balancer will reside
     Type: AWS::EC2::Subnet::Id
+  LoadBalancerType:
+    Description: Type of ALB (internal or internet-facing)
+    Type: String
   ACMSSLCertARN:
     Type: String
     Description: The ARN of the AWS Certificate Manager SSL Certificate to associate with the Load Balancer
@@ -51,7 +54,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
       Name: !Ref Namespace
-      Scheme: internal #internet-facing or internal
+      Scheme: !Ref LoadBalancerType
       Subnets:
         - Ref: ALBSubnet1
         - Ref: ALBSubnet2
