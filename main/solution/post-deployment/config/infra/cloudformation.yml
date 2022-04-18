@@ -365,6 +365,8 @@ Resources:
                   - ec2:DescribeSecurityGroups
                   - ec2:DescribeSubnets
                   - ec2:DescribeVpcs
+                  - elasticloadbalancing:*
+                
                 Resource: '*' # EMR slave node security group has a machine generated ID and no tags, can not specify resource or add condition here
               - Effect: Allow
                 Action:
