@@ -459,7 +459,7 @@ Outputs:
 
   JupyterUrl:
     Description: Open Jupyter on your new EMR cluster
-    Value: !Sub 'https://emr-${LoadBalancer.LoadBalancerName}.${CustomDomainName}:8192'
+    Value: !Sub 'https://emr-${LoadBalancer.LoadBalancerName}.${CustomDomainName}'
   
   ApplicationLoadBalancerDNS:
     Description: ALB DNS Name
@@ -507,4 +507,4 @@ Outputs:
 
   MetaConnection1Url:
     Description: URL to connect to the Jupyter Notebook
-    Value: !Sub 'https://emr-${LoadBalancer.LoadBalancerName}.${CustomDomainName}:8192'
+    Value: !Sub 'https://emr-${LoadBalancer.LoadBalancerName}.${CustomDomainName}'
