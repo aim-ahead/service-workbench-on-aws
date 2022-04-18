@@ -48,6 +48,18 @@ Parameters:
   Subnet:
     Description: Subnet for EMR nodes, from the VPC selected above
     Type: AWS::EC2::Subnet::Id
+  PublicSubnet1:
+    Description: Public Subnet1 for Application Load Balancer in front of EMR nodes, from the VPC selected above
+    Type: AWS::EC2::Subnet::Id
+  PublicSubnet2:
+    Description: Public Subnet1 for Application Load Balancer in front of EMR nodes, from the VPC selected above
+    Type: AWS::EC2::Subnet::Id
+  ACMSSLCertARN:
+    Type: String
+    Description: The ARN of the AWS Certificate Manager SSL Certificate to associate with the Load Balancer
+  CustomDomainName:
+    Type: String
+    Description: Custom Domain Name you have used for your Service Workbench Application
   CoreNodeCount:
     Description: Number of core nodes to provision (1-80)
     Type: Number
@@ -373,10 +385,88 @@ Resources:
       SecurityConfiguration: !Ref EmrSecurityConfiguration
       LogUri: !Sub 's3://${LogBucket}'
 
+# =============================================================================================
+  # Load Balancer
+# =============================================================================================
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: LoadBalancerSecurityGroup
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      LoadBalancerAttributes:
+        # this is the default, but is specified here in case it needs to be changed
+        - Key: idle_timeout.timeout_seconds
+          Value: 60
+
+      SecurityGroups:
+        - !Ref LoadBalancerSecurityGroup
+      Subnets:
+        - !Ref PublicSubnet1
+        - !Ref PublicSubnet2
+
+  EC2TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 15
+      HealthyThresholdCount: 5
+      TargetType: ip
+      Matcher:
+        HttpCode: '200'
+      Port: 8192
+      Protocol: HTTP
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: '20'
+      Targets:
+      - Id:  !Join
+              - '.'
+              - - !Select [1, !Split ['-', !GetAtt EmrCluster.MasterPublicDNS]]
+                - !Select [2, !Split ['-', !GetAtt EmrCluster.MasterPublicDNS]]
+                - !Select [3, !Split ['-', !GetAtt EmrCluster.MasterPublicDNS]]
+                - !Select [0, !Split ['.', !Select [4, !Split ['-', !GetAtt EmrCluster.MasterPublicDNS]]]]
+        Port: 8192
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref VPC
+
+  ALBHttpsGangliaListener:
+    Type: 'AWS::ElasticLoadBalancingV2::Listener'
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref EC2TargetGroup
+      LoadBalancerArn: !Ref LoadBalancer
+      Certificates:
+        - CertificateArn: !Ref ACMSSLCertARN
+      Port: 443
+      Protocol: HTTPS
+
 Outputs:
+
+  MetaConnection1Type:
+    Description: Type of environment this connection is for
+    Value: emr
+
   JupyterUrl:
     Description: Open Jupyter on your new EMR cluster
-    Value: !Sub 'http://${EmrCluster.MasterPublicDNS}:8192'
+    Value: !Sub 'https://emr-${LoadBalancer.LoadBalancerName}.${CustomDomainName}:8192'
+  
+  ApplicationLoadBalancerDNS:
+    Description: ALB DNS Name
+    Value: !GetAtt LoadBalancer.DNSName
+  ApplicationLoadBalancerName:
+    Description: ALB DNS Name
+    Value: !GetAtt LoadBalancer.LoadBalancerName
   LogBucket:
     Description: EMR Scratch data and Logs bucket
     Value: !Ref LogBucket
@@ -417,4 +507,4 @@ Outputs:
 
   MetaConnection1Url:
     Description: URL to connect to the Jupyter Notebook
-    Value: !Sub 'http://${EmrCluster.MasterPublicDNS}:8192'
+    Value: !Sub 'https://emr-${LoadBalancer.LoadBalancerName}.${CustomDomainName}:8192'

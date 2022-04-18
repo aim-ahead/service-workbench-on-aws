@@ -219,7 +219,12 @@ async function updateEnvOnProvisioningSuccess({
   let connectionTypeValue;
   if (connectionType) {
     connectionTypeValue = connectionType.OutputValue;
-    if (connectionTypeValue.toLowerCase() === 'rstudio') {
+    if (connectionTypeValue.toLowerCase() === 'emr') {
+      const environmentDnsService = await container.find('environmentDnsService');
+      const dnsName = _.find(outputs, o => o.OutputKey === 'ApplicationLoadBalancerDNS').OutputValue;
+      const ALBName = _.find(outputs, o => o.OutputKey === 'ApplicationLoadBalancerName').OutputValue;
+      await environmentDnsService.createRecord('emr', ALBName, dnsName);
+    } else if (connectionTypeValue.toLowerCase() === 'rstudio') {
       const environmentDnsService = await container.find('environmentDnsService');
       const settings = await container.find('settings');
       if (settings.getBoolean(settingKeys.isAppStreamEnabled)) {
