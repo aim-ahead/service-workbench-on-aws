@@ -164,6 +164,10 @@ class ScEnvironmentUpdateCidrs extends React.Component {
     }
     const fields = form.$('cidr');
 
+    console.log('-------------------------------');
+    console.log(fields);
+    console.log('-------------------------------');
+
     const anyWideCidr = () => {
       let wideCidrFound = false;
       _.forEach(this.ingressRules, rule => {

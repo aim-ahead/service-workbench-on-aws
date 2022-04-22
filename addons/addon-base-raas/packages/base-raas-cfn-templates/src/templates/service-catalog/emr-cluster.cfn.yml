@@ -163,9 +163,8 @@ Resources:
         - IpProtocol: tcp
           FromPort: 8192
           ToPort: 8192
-          CidrIp:
-            Ref: AccessFromCIDRBlock
-
+          SourceSecurityGroupId: !GetAtt LoadBalancerSecurityGroup.GroupId
+        
   InstanceProfile:
     Properties:
       Path: '/'
@@ -394,10 +393,11 @@ Resources:
       GroupDescription: LoadBalancerSecurityGroup
       VpcId: !Ref VPC
       SecurityGroupIngress:
-        - IpProtocol: -1
-          FromPort: -1
-          ToPort: -1
-          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp:
+            Ref: AccessFromCIDRBlock
 
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
