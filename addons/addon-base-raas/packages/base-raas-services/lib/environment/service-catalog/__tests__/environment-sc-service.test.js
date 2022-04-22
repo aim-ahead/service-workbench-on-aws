@@ -1687,7 +1687,9 @@ Quisque egestas, eros nec feugiat venenatis, lorem turpis placerat tortor, ullam
       const origSecurityGroupId = 'sampleSecurityGroupId';
       // EMR's security group logical ID is different than the rest of the workspace-types
       const stackResources = {
-        StackResourceSummaries: [{ LogicalResourceId: 'MasterSecurityGroup', PhysicalResourceId: origSecurityGroupId }],
+        StackResourceSummaries: [
+          { LogicalResourceId: 'LoadBalancerSecurityGroup', PhysicalResourceId: origSecurityGroupId },
+        ],
       };
       const templateDetails = {
         TemplateBody: YAML.dump({
