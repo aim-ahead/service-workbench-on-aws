@@ -538,10 +538,10 @@ class EnvironmentScService extends Service {
     const studyService = await this.service('studyService');
     const studies = environment.studyIds
       ? await Promise.all(
-          environment.studyIds.map(studyId => {
-            return studyService.mustFind(requestContext, studyId);
-          }),
-        )
+        environment.studyIds.map(studyId => {
+          return studyService.mustFind(requestContext, studyId);
+        }),
+      )
       : [];
     const openDataStudies = studies.filter(study => {
       return study.category === 'Open Data';
@@ -1067,7 +1067,7 @@ class EnvironmentScService extends Service {
 
     if (
       _.isUndefined(templateBody.Resources.SecurityGroup) &&
-      _.isUndefined(templateBody.Resources.MasterSecurityGroup)
+      _.isUndefined(templateBody.Resources.LoadBalancerSecurityGroup)
     ) {
       // Do NOT throw an error here because this is being used by the GET ScEnv API (which is also used to build the View Details page)
       // Rather send back an empty array of ingress rules, to show none were configured in SC template
@@ -1076,11 +1076,14 @@ class EnvironmentScService extends Service {
 
     const cfnTemplateIngressRules = templateBody.Resources.SecurityGroup
       ? templateBody.Resources.SecurityGroup.Properties.SecurityGroupIngress
-      : templateBody.Resources.MasterSecurityGroup.Properties.SecurityGroupIngress; // For EMR use-cases
+      : templateBody.Resources.LoadBalancerSecurityGroup.Properties.SecurityGroupIngress; // For EMR use-cases
 
     const securityGroup =
       _.find(stackResources.StackResourceSummaries, resource => resource.LogicalResourceId === 'SecurityGroup') ||
-      _.find(stackResources.StackResourceSummaries, resource => resource.LogicalResourceId === 'MasterSecurityGroup'); // For EMR use-cases
+      _.find(
+        stackResources.StackResourceSummaries,
+        resource => resource.LogicalResourceId === 'LoadBalancerSecurityGroup',
+      ); // For EMR use-cases
     const securityGroupId = securityGroup.PhysicalResourceId;
     const { securityGroupResponse } = await this.getWorkspaceSecurityGroup(
       requestContext,
@@ -1099,10 +1102,7 @@ class EnvironmentScService extends Service {
       }
       const matchingRule = _.find(
         workspaceIngressRules,
-        workspaceRule =>
-          ruleToUse.FromPort === workspaceRule.FromPort &&
-          ruleToUse.ToPort === workspaceRule.ToPort &&
-          ruleToUse.IpProtocol === workspaceRule.IpProtocol,
+        workspaceRule => ruleToUse.IpProtocol === workspaceRule.IpProtocol,
       );
       const currentCidrRanges = matchingRule ? _.map(matchingRule.IpRanges, ipRange => ipRange.CidrIp) : [];
 
