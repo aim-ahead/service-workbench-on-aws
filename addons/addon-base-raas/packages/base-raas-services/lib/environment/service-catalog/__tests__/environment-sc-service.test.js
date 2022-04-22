@@ -1744,6 +1744,13 @@ Quisque egestas, eros nec feugiat venenatis, lorem turpis placerat tortor, ullam
       );
 
       // CHECK
+      console.log(currentIngressRules);
+      console.log('-----------------');
+      console.log(expectedOutcome);
+      console.log('-----------------');
+      console.log(securityGroupId);
+      console.log('-----------------');
+      console.log(origSecurityGroupId);
       expect(currentIngressRules).toMatchObject(expectedOutcome);
       expect(securityGroupId).toEqual(origSecurityGroupId);
     });
