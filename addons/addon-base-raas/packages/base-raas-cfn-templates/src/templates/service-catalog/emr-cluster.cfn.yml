@@ -48,12 +48,16 @@ Parameters:
   Subnet:
     Description: Subnet for EMR nodes, from the VPC selected above
     Type: AWS::EC2::Subnet::Id
-  PublicSubnet1:
+  ALBSubnet1:
     Description: Public Subnet1 for Application Load Balancer in front of EMR nodes, from the VPC selected above
     Type: AWS::EC2::Subnet::Id
-  PublicSubnet2:
+  ALBSubnet2:
     Description: Public Subnet1 for Application Load Balancer in front of EMR nodes, from the VPC selected above
     Type: AWS::EC2::Subnet::Id
+  LoadBalancerType:
+    Type: String
+    Description: Enter internal if subnets are private subnets or enter internet-facing if subnets are public subnets 
+    AllowedValues : ["internal", "internet-facing"]
   ACMSSLCertARN:
     Type: String
     Description: The ARN of the AWS Certificate Manager SSL Certificate to associate with the Load Balancer
@@ -402,6 +406,7 @@ Resources:
   LoadBalancer:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
+      Scheme: !Ref LoadBalancerType
       LoadBalancerAttributes:
         # this is the default, but is specified here in case it needs to be changed
         - Key: idle_timeout.timeout_seconds
@@ -410,8 +415,8 @@ Resources:
       SecurityGroups:
         - !Ref LoadBalancerSecurityGroup
       Subnets:
-        - !Ref PublicSubnet1
-        - !Ref PublicSubnet2
+        - !Ref ALBSubnet1
+        - !Ref ALBSubnet2
 
   EC2TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
