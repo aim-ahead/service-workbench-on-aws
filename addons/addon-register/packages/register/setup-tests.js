@@ -13,22 +13,10 @@
  *  permissions and limitations under the License.
  */
 
-import { renderAppContainer, renderError, renderProgress } from '@aws-ee/base-ui/dist/render-utils';
-import bootstrapApp from '@aws-ee/base-ui/dist/bootstrap-app';
-import pluginRegistry from './plugins/plugin-registry';
+/* eslint-disable import/no-extraneous-dependencies */
 
-import 'typeface-lato';
-import './css/basscss-important.css';
-import './css/semantic.min.css';
-import 'animate.css/animate.css';
-import 'toastr/build/toastr.css';
-import 'react-table/react-table.css';
-import './css/index.css';
-import '@aws-ee/register/css/overrides.css';
+import { configure } from 'enzyme';
+import 'regenerator-runtime/runtime';
+import Adapter from 'enzyme-adapter-react-16';
 
-bootstrapApp({
-  renderAppContainer,
-  renderError,
-  renderProgress,
-  pluginRegistry,
-});
+configure({ adapter: new Adapter() });

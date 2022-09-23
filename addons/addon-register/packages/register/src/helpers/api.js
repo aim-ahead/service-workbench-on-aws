@@ -13,22 +13,16 @@
  *  permissions and limitations under the License.
  */
 
-import { renderAppContainer, renderError, renderProgress } from '@aws-ee/base-ui/dist/render-utils';
-import bootstrapApp from '@aws-ee/base-ui/dist/bootstrap-app';
-import pluginRegistry from './plugins/plugin-registry';
+/* eslint-disable import/prefer-default-export */
+// eslint-disable-next-line no-unused-vars
+import _ from 'lodash';
+import { httpApiPost } from '@aws-ee/base-ui/dist/helpers/api';
+import { removeNulls } from '@aws-ee/base-ui/dist/helpers/utils';
 
-import 'typeface-lato';
-import './css/basscss-important.css';
-import './css/semantic.min.css';
-import 'animate.css/animate.css';
-import 'toastr/build/toastr.css';
-import 'react-table/react-table.css';
-import './css/index.css';
-import '@aws-ee/register/css/overrides.css';
+function registerUser(user) {
+  const params = {};
+  const data = removeNulls(_.clone(user), 'firstName', 'lastName', 'email');
+  return httpApiPost('api/register', { data, params });
+}
 
-bootstrapApp({
-  renderAppContainer,
-  renderError,
-  renderProgress,
-  pluginRegistry,
-});
+export { registerUser };

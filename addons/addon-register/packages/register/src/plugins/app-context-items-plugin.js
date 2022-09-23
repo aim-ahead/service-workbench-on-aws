@@ -13,22 +13,21 @@
  *  permissions and limitations under the License.
  */
 
-import { renderAppContainer, renderError, renderProgress } from '@aws-ee/base-ui/dist/render-utils';
-import bootstrapApp from '@aws-ee/base-ui/dist/bootstrap-app';
-import pluginRegistry from './plugins/plugin-registry';
+import awsImage from '../../images/SWB.png';
+import logoImage from '../../images/logo.png';
 
-import 'typeface-lato';
-import './css/basscss-important.css';
-import './css/semantic.min.css';
-import 'animate.css/animate.css';
-import 'toastr/build/toastr.css';
-import 'react-table/react-table.css';
-import './css/index.css';
-import '@aws-ee/register/css/overrides.css';
+/**
+ * Registers base stores to the appContext object
+ *
+ * @param appContext An application context object
+ */
+// eslint-disable-next-line no-unused-vars
+function registerAppContextItems(appContext) {
+  appContext.assets.images.registerAws = awsImage;
+  appContext.assets.images.registerLogo = logoImage;
+}
 
-bootstrapApp({
-  renderAppContainer,
-  renderError,
-  renderProgress,
-  pluginRegistry,
-});
+const plugin = {
+  registerAppContextItems,
+};
+export default plugin;

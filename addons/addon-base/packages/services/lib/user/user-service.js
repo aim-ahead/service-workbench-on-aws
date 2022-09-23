@@ -59,6 +59,10 @@ class UserService extends Service {
     const { username, password } = user;
     delete user.password;
 
+    // force email and username to lowercase, so we can match whatever the idp is sending
+    user.username = user.username.toLowerCase();
+    user.email = user.email.toLowerCase();
+
     // ensure that an internal user is not created in this request
     if (_.isUndefined(user.authenticationProviderId) || user.authenticationProviderId === 'internal') {
       throw this.boom.badRequest(
@@ -282,7 +286,7 @@ class UserService extends Service {
       .query()
       .table(table)
       .index('Principal')
-      .key('username', username)
+      .key('username', username.toLowerCase())
       .sortKey('ns')
       .eq(ns)
       .projection(fields)
