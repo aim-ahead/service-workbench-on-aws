@@ -7,6 +7,7 @@ import { Form, Container, Grid, Dimmer, Loader, Header, Segment, Image, Label } 
 
 import { gotoFn } from '@aws-ee/base-ui/dist/helpers/routing';
 
+import { branding } from '@aws-ee/base-ui/dist/helpers/settings';
 import { getRegisterFormFields, formValidationErrors } from '../models/RegisterForm';
 import { registerUser } from '../helpers/api';
 
@@ -72,17 +73,21 @@ class Register extends React.Component {
     );
   }
 
+  renderHTML(content) {
+    // This method sets html from a string. Because we're pulling this from the config file made by
+    // an approved admin, we know the value is safe so there is no danger in using it directly below.
+    // https://reactjs.org/docs/dom-elements.html#dangerouslysetinnerhtml
+    // eslint-disable-next-line react/no-danger
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
+  }
+
   renderRegisterationForm() {
     return (
       <Form size="large" loading={this.loading} onSubmit={this.handleSubmit}>
         <Header as="h2" textAlign="center" style={styles.header}>
-          WELCOME TO AIM-AHEAD&apos;s SERVICE WORKBENCH ON AWS
+          {branding.register.title}
         </Header>
-        <p>
-          AIM-AHEAD&apos;s Service Workbench on AWS provides a self-service, three-click, on-demand service for
-          researchers to build research environments in minutes without needing cloud infrastructure knowledge. Fill out
-          the form below to create your account on Service Workbench on AWS.
-        </p>
+        {this.renderHTML(branding.register.summary)}
         <Segment basic className="ui fluid form">
           <Dimmer active={this.formProcessing} inverted>
             <Loader inverted>Submitting registration</Loader>
@@ -118,18 +123,7 @@ class Register extends React.Component {
         <Header as="h2" textAlign="center" style={styles.header}>
           SUCCESS!
         </Header>
-        <p>
-          Your AIM-AHEAD Service Workbench on AWS account has been successfully created. What you should expect next:
-        </p>
-        <ol>
-          <li>The AIM-AHEAD Service Workbench on AWS administrator will review your account.</li>
-          <li>You will receive an email sent from Okta to create a password.</li>
-          <li>Login to Service Workbench on AWS and start your research.</li>
-        </ol>
-        <p>
-          You can access the AIM-AHEAD Service Workbench on AWS User Guide&nbsp;
-          <a href="https://docs.google.com/document/d/1nrpLLpmm66-G7Mo-BOBUkGu-DN7fD8YCK3SL9CrPhp0/edit">here</a>.
-        </p>
+        {this.renderHTML(branding.register.success)}
       </div>
     );
   }

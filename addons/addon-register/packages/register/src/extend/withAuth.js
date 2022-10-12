@@ -20,6 +20,7 @@ import { Button } from 'semantic-ui-react';
 import Login from '@aws-ee/base-ui/dist/parts/Login';
 import _withAuth from '@aws-ee/base-ui/dist/withAuth';
 import { gotoFn } from '@aws-ee/base-ui/dist/helpers/routing';
+import { branding } from '@aws-ee/base-ui/dist/helpers/settings';
 
 import Register from '../parts/Register';
 
@@ -30,18 +31,21 @@ function RegisterLogin() {
     }
 
     return (
-      <Button
-        data-testid="login"
-        type="submit"
-        color="blue"
-        fluid
-        basic
-        size="large"
-        className="mb2"
-        onClick={handleRegister}
-      >
-        Register
-      </Button>
+      <>
+        <Button
+          data-testid="login"
+          type="submit"
+          color="blue"
+          fluid
+          basic
+          size="large"
+          className="mb2"
+          onClick={handleRegister}
+        >
+          Register
+        </Button>
+        {branding.register.loginWarning}
+      </>
     );
   }
   return <Login AdditionalLoginComponents={RegisterButton} />;
