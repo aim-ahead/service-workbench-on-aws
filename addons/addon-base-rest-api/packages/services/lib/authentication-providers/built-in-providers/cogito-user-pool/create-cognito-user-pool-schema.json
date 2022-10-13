@@ -46,6 +46,10 @@
       "$id": "#/properties/enableNativeUserPoolUsers",
       "type": "boolean"
     },
+    "customRegister": {
+      "$id": "#/properties/customRegister",
+      "type": "boolean"
+    },
     "federatedIdentityProviders": {
       "$id": "#/properties/providerConfig/properties/federatedIdentityProviders",
       "type": "array",
@@ -69,6 +73,10 @@
           },
           "metadata": {
             "$id": "#/properties/federatedIdentityProviders/properties/metadata",
+            "type": "string"
+          },
+          "attributeMap": {
+            "$id": "#/properties/federatedIdentityProviders/properties/attributeMap",
             "type": "string"
           }
         }

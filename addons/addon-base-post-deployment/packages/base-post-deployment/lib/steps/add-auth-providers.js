@@ -24,10 +24,12 @@ const settingKeys = {
   envName: 'envName',
   solutionName: 'solutionName',
   enableNativeUserPoolUsers: 'enableNativeUserPoolUsers',
+  enableCustomRegistration: 'enableCustomRegistration',
   fedIdpIds: 'fedIdpIds',
   fedIdpNames: 'fedIdpNames',
   fedIdpDisplayNames: 'fedIdpDisplayNames',
   fedIdpMetadatas: 'fedIdpMetadatas',
+  fedIdpAttributeMap: 'fedIdpAttributeMap',
   defaultAuthNProviderTitle: 'defaultAuthNProviderTitle',
   cognitoAuthNProviderTitle: 'cognitoAuthNProviderTitle',
   cognitoUserPoolDomainPrefix: 'cognitoUserPoolDomainPrefix',
@@ -59,11 +61,13 @@ class AddAuthProviders extends Service {
     const cognitoUserPoolDomainPrefix = this.settings.get(settingKeys.cognitoUserPoolDomainPrefix);
 
     const enableNativeUserPoolUsers = this.settings.getBoolean(settingKeys.enableNativeUserPoolUsers);
+    const enableCustomRegistration = this.settings.getBoolean(settingKeys.enableCustomRegistration);
 
     const fedIdpIds = this.settings.optionalObject(settingKeys.fedIdpIds, []);
     const fedIdpNames = this.settings.optionalObject(settingKeys.fedIdpNames, []);
     const fedIdpDisplayNames = this.settings.optionalObject(settingKeys.fedIdpDisplayNames, []);
     const fedIdpMetadatas = this.settings.optionalObject(settingKeys.fedIdpMetadatas, []);
+    const fedIdpAttributeMap = this.settings.optionalObject(settingKeys.fedIdpAttributeMap, []);
 
     // If user pools aren't enabled and no IdPs are configured, skip user pool creation
     const idpsNotConfigured = [fedIdpIds, fedIdpNames, fedIdpDisplayNames, fedIdpMetadatas].some(
@@ -82,6 +86,7 @@ class AddAuthProviders extends Service {
           name: fedIdpNames[idx],
           displayName: fedIdpDisplayNames[idx],
           metadata: fedIdpMetadatas[idx],
+          attributeMap: fedIdpAttributeMap[idx] || '{}',
         };
       }),
     );
@@ -93,6 +98,7 @@ class AddAuthProviders extends Service {
       clientName: `${envName}-${solutionName}-client`,
       userPoolDomain: cognitoUserPoolDomainPrefix,
       enableNativeUserPoolUsers,
+      customRegister: enableCustomRegistration || false,
       federatedIdentityProviders,
     };
 
